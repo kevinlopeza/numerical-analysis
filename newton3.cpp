@@ -5,17 +5,18 @@
 using std::cout;	using std::endl;
 using std::abs;		using std::setprecision;
 
-
-double g = 32.17;
-double s0 = 300;
-double m = 0.25;
-double k = 0.1;
+double Beta = -1.16583607818894;
+double Gamma = 0.0542253936905836;
+double Delta = -1.25100322759761*pow(10, -4); 
+double R = 0.08205;
+double T = 273.15;
+double P = 200;
 
 //Definimos la función
-inline double f(double t) { return s0 - (m*g*t)/k + ((pow(m, 2.0)*g)/pow(k, 2))*(1 - exp( (-k*t)/m )); }
+inline double f(double V) { return (R*T)/V + Beta/pow(V, 2) + Gamma/pow(V, 3) + Delta/pow(V, 4) - P;}
 
 //Derivada de la función
-inline double df(double t) { return -m*g*(1/k)*(exp((k*t)/m) - 1)*exp( (-k*t)/(m) ) ; }
+inline double df(double V) { return  (-R*T)/pow(V, 2) - (2.0*Beta)/pow(V, 3) - (3.0*Gamma)/pow(V, 4) - (4.0*Delta)/pow(V, 5) ;}
 
 /*
 p0: Aproximación inicial
@@ -36,7 +37,6 @@ void newton(double p0,double TOL,double Nmax){
 	
 int main(){	
 	// Invocamos el método según los datos del problema
-	newton(5, pow(10, -15), 40);
-	cout << f(6.0037263087587833255) << endl;
+	newton((R*T)/P, pow(10, -15), 40);
 	return 0;
 }
